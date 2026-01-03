@@ -1,0 +1,14 @@
+﻿@model ProjektPAI.Models.MovementPoint
+
+<img src="@Model.PhotoUrl" alt="@Model.Description" />
+<p>@Model.Description</p>
+
+@foreach (var d in Model.Directions)
+{
+    <a asp-route-id="@d.ToPointId"
+       role="button"
+       tabindex="0"
+       aria-label="Kierunek @d.Type">
+        @d.Type
+    </a>
+}

@@ -1,0 +1,15 @@
+﻿@{
+    var path = ViewBag.Path as List<int>;
+}
+
+<h2>Najkrótsza trasa</h2>
+
+@if (path != null)
+{
+    <ol>
+        @foreach (var p in path)
+        {
+            <li>Punkt ID: @p</li>
+        }
+    </ol>
+}

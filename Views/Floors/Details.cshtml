@@ -1,0 +1,14 @@
+﻿@model ProjektPAI.Models.Floor
+
+<h2>Piętro @Model.Level</h2>
+
+@foreach (var p in Model.MovementPoints)
+{
+    <div>
+        <a asp-controller="Navigation"
+           asp-action="Point"
+           asp-route-id="@p.Id">
+            @p.Description
+        </a>
+    </div>
+}

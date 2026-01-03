@@ -1,0 +1,12 @@
+﻿@model IEnumerable<ProjektPAI.Models.Room>
+
+<h2>Wyniki wyszukiwania</h2>
+
+@foreach (var r in Model)
+{
+    <div>
+        <a asp-action="Details" asp-route-id="@r.Id">
+            @r.Name
+        </a>
+    </div>
+}

@@ -1,0 +1,12 @@
+﻿@model ProjektPAI.Models.Building
+
+<h2>@Model.Name</h2>
+
+@foreach (var f in Model.Floors)
+{
+    <a asp-controller="Floors"
+       asp-action="Details"
+       asp-route-id="@f.Id">
+        Piętro @f.Level
+    </a>
+}

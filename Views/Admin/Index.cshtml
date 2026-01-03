@@ -1,0 +1,12 @@
+﻿@model IEnumerable<ProjektPAI.Models.Building>
+
+<h2>Panel administratora</h2>
+
+<a asp-action="CreateBuilding">Dodaj budynek</a>
+
+<ul>
+    @foreach (var b in Model)
+    {
+        <li>@b.Name</li>
+    }
+</ul>

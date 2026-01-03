@@ -1,0 +1,12 @@
+﻿@model IEnumerable<ProjektPAI.Models.Building>
+
+<h1>Budynki uczelni</h1>
+
+@foreach (var b in Model)
+{
+    <div>
+        <img src="@b.PhotoUrl" alt="@b.Description" />
+        <h3>@b.Name</h3>
+        <a asp-action="Details" asp-route-id="@b.Id">Wejdź</a>
+    </div>
+}

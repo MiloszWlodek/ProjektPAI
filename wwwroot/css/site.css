@@ -1,0 +1,4 @@
+a:focus, button:focus {
+    outline: 4px solid #005fcc;
+    outline-offset: 2px;
+}
