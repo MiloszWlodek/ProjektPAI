@@ -1,0 +1,69 @@
+@model RouteViewModel
+@{
+    ViewData["Title"] = "Wyznacz trasę";
+}
+
+<div class="container">
+    <h1 class="mt-3">Wyznacz trasę</h1>
+    <p class="text-muted">Trasa liczona jest po punktach ruchu z wagami (metry).</p>
+
+    <form method="get" asp-action="Route" class="row g-3">
+        <div class="col-12 col-lg-5">
+            <label for="fromRoomId" class="form-label">Z sali</label>
+            <select id="fromRoomId" name="fromRoomId" class="form-select">
+                <option value="">-- wybierz --</option>
+                @foreach (var r in Model.Rooms)
+                {
+                    var label = $"{r.Floor?.Building?.Code} {r.Floor?.Name}: {r.Name}";
+                    <option value="@r.Id" selected="@(Model.FromRoomId == r.Id)">@label</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-12 col-lg-5">
+            <label for="toRoomId" class="form-label">Do sali</label>
+            <select id="toRoomId" name="toRoomId" class="form-select">
+                <option value="">-- wybierz --</option>
+                @foreach (var r in Model.Rooms)
+                {
+                    var label = $"{r.Floor?.Building?.Code} {r.Floor?.Name}: {r.Name}";
+                    <option value="@r.Id" selected="@(Model.ToRoomId == r.Id)">@label</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-12 col-lg-2 d-flex align-items-end">
+            <button class="btn btn-primary w-100" type="submit">Wyznacz</button>
+        </div>
+
+        <div class="col-12">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="elevatorOnly" name="elevatorOnly" value="true" checked="@(Model.ElevatorOnly)" />
+                <label class="form-check-label" for="elevatorOnly">Tryb winda / bez schodów</label>
+            </div>
+        </div>
+    </form>
+
+    @if (Model.FromRoom != null && Model.ToRoom != null)
+    {
+        <hr class="my-4" />
+        <h2 class="h4">Wynik</h2>
+
+        @if (Model.RouteResult == null)
+        {
+            <div class="alert alert-warning">Nie znaleziono trasy (sprawdź, czy sale mają ustawione punkty wejścia).</div>
+        }
+        else
+        {
+            <p><strong>Długość trasy:</strong> @Model.RouteResult.TotalMeters m</p>
+            <ol class="list-group list-group-numbered">
+                @foreach (var s in Model.RouteResult.Steps)
+                {
+                    <li class="list-group-item">
+                        <span>Kierunek: <strong>@s.Kind</strong>, dystans: @s.WeightMeters m</span>
+                    </li>
+                }
+            </ol>
+        }
+    }
+</div>

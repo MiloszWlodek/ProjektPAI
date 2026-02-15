@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Panel administracyjny – Wirtualna Uczelnia";
+}
+
+<div class="container">
+    <h1 class="mt-3">Panel administracyjny – Wirtualna Uczelnia</h1>
+
+    <div class="row row-cols-1 row-cols-md-3 g-3 mt-2">
+        <div class="col"><div class="card"><div class="card-body"><div class="h5">Budynki</div><div class="display-6">@ViewBag.Buildings</div><a class="btn btn-outline-primary mt-2" asp-controller="BuildingsAdmin" asp-action="Index">Zarządzaj</a></div></div></div>
+        <div class="col"><div class="card"><div class="card-body"><div class="h5">Piętra</div><div class="display-6">@ViewBag.Floors</div><a class="btn btn-outline-primary mt-2" asp-controller="FloorsAdmin" asp-action="Index">Zarządzaj</a></div></div></div>
+        <div class="col"><div class="card"><div class="card-body"><div class="h5">Sale</div><div class="display-6">@ViewBag.Rooms</div><a class="btn btn-outline-primary mt-2" asp-controller="RoomsAdmin" asp-action="Index">Zarządzaj</a></div></div></div>
+        <div class="col"><div class="card"><div class="card-body"><div class="h5">Punkty</div><div class="display-6">@ViewBag.Points</div><a class="btn btn-outline-primary mt-2" asp-controller="MovementPointsAdmin" asp-action="Index">Zarządzaj</a></div></div></div>
+        <div class="col"><div class="card"><div class="card-body"><div class="h5">Kierunki</div><div class="display-6">@ViewBag.Directions</div><a class="btn btn-outline-primary mt-2" asp-controller="DirectionsAdmin" asp-action="Index">Zarządzaj</a></div></div></div>
+    </div>
+</div>

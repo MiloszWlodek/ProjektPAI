@@ -1,0 +1,15 @@
+@model Direction
+@{ ViewData["Title"] = "Szczegóły kierunku"; }
+<div class="container">
+  <h1 class="mt-3">Kierunek</h1>
+  <dl class="row">
+    <dt class="col-sm-3">Od</dt><dd class="col-sm-9">@Model.FromPointId</dd>
+    <dt class="col-sm-3">Kind</dt><dd class="col-sm-9">@Model.Kind</dd>
+    <dt class="col-sm-3">Do punktu</dt><dd class="col-sm-9">@Model.ToPointId</dd>
+    <dt class="col-sm-3">Do sali</dt><dd class="col-sm-9">@Model.ToRoomId</dd>
+    <dt class="col-sm-3">Waga (m)</dt><dd class="col-sm-9">@Model.WeightMeters</dd>
+    <dt class="col-sm-3">Aktywny</dt><dd class="col-sm-9">@Model.IsActive</dd>
+    <dt class="col-sm-3">Bez schodów</dt><dd class="col-sm-9">@Model.ElevatorFriendly</dd>
+  </dl>
+  <a class="btn btn-outline-secondary" asp-action="Index">Powrót</a>
+</div>

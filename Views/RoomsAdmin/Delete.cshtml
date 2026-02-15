@@ -1,0 +1,11 @@
+@model Room
+@{ ViewData["Title"] = "Usuń salę"; }
+<div class="container">
+  <h1 class="mt-3">Usuń salę</h1>
+  <div class="alert alert-danger">Czy na pewno chcesz usunąć: <strong>@Model.Name</strong>?</div>
+  <form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button class="btn btn-danger" type="submit">Usuń</button>
+    <a class="btn btn-outline-secondary" asp-action="Index">Anuluj</a>
+  </form>
+</div>

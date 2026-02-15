@@ -1,0 +1,46 @@
+@model Room
+@{
+    ViewData["Title"] = Model.Name;
+    string SafeAlt() => string.IsNullOrWhiteSpace(Model.AltText) ? $"Zdjęcie: {Model.Name}" : Model.AltText!;
+}
+
+<div class="container">
+    <nav aria-label="Breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index">Wirtualna Uczelnia</a></li>
+            <li class="breadcrumb-item"><a asp-action="Building" asp-route-id="@Model.Floor?.BuildingId">@Model.Floor?.Building?.Name</a></li>
+            <li class="breadcrumb-item"><a asp-action="Floor" asp-route-id="@Model.FloorId">@Model.Floor?.Name</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+        </ol>
+    </nav>
+
+    <h1>@Model.Name</h1>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Description))
+    {
+        <p>@Model.Description</p>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.PhotoPath))
+    {
+        <img class="img-fluid border rounded" src="@Model.PhotoPath" alt="@SafeAlt()" />
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.AudioPath))
+    {
+        <div class="mt-3">
+            <h2 class="h5">Informacja głosowa</h2>
+            <audio controls>
+                <source src="@Model.AudioPath" />
+                Twoja przeglądarka nie wspiera odtwarzacza audio.
+            </audio>
+        </div>
+    }
+
+    @if (Model.EntryPointId.HasValue)
+    {
+        <div class="mt-4">
+            <a class="btn btn-primary" asp-action="Point" asp-route-id="@Model.EntryPointId.Value">Przejdź do punktu wejścia</a>
+        </div>
+    }
+</div>

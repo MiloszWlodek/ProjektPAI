@@ -1,0 +1,30 @@
+@model Building
+@{ ViewData["Title"] = "Dodaj budynek"; }
+<div class="container">
+  <h1 class="mt-3">Dodaj budynek</h1>
+  <form asp-action="Create" method="post">
+    <div class="mb-3">
+    <label asp-for="Code" class="form-label"></label>
+    <input asp-for="Code" class="form-control" />
+    <span asp-validation-for="Code" class="text-danger"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="Name" class="form-label"></label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="Location" class="form-label"></label>
+    <input asp-for="Location" class="form-control" />
+    <span asp-validation-for="Location" class="text-danger"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="Description" class="form-label"></label>
+    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+    <span asp-validation-for="Description" class="text-danger"></span>
+</div>
+    <button class="btn btn-primary" type="submit">Zapisz</button>
+    <a class="btn btn-outline-secondary" asp-action="Index">Anuluj</a>
+  </form>
+</div>
+@section Scripts{<partial name="_ValidationScriptsPartial" />}

@@ -1,0 +1,46 @@
+@model Room
+@{ ViewData["Title"] = "Dodaj salę"; }
+<div class="container">
+  <h1 class="mt-3">Dodaj salę</h1>
+  <form asp-action="Create" method="post">
+    <div class="mb-3">
+  <label class="form-label" for="FloorId">Piętro</label>
+  <select class="form-select" asp-for="FloorId" asp-items="ViewBag.FloorId"></select>
+  <span asp-validation-for="FloorId" class="text-danger"></span>
+</div>
+<div class="mb-3">
+  <label asp-for="Name" class="form-label"></label>
+  <input asp-for="Name" class="form-control" />
+  <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+<div class="mb-3">
+  <label asp-for="RoomType" class="form-label"></label>
+  <select asp-for="RoomType" class="form-select" asp-items="Html.GetEnumSelectList<RoomType>()"></select>
+</div>
+<div class="mb-3">
+  <label asp-for="Description" class="form-label"></label>
+  <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+</div>
+<div class="mb-3">
+  <label asp-for="PhotoPath" class="form-label"></label>
+  <input asp-for="PhotoPath" class="form-control" />
+</div>
+<div class="mb-3">
+  <label asp-for="AltText" class="form-label"></label>
+  <input asp-for="AltText" class="form-control" />
+</div>
+<div class="mb-3">
+  <label asp-for="AudioPath" class="form-label"></label>
+  <input asp-for="AudioPath" class="form-control" />
+</div>
+<div class="mb-3">
+  <label class="form-label" for="EntryPointId">Punkt wejścia (opcjonalnie)</label>
+  <select class="form-select" asp-for="EntryPointId" asp-items="ViewBag.EntryPointId">
+    <option value="">-- brak --</option>
+  </select>
+</div>
+    <button class="btn btn-primary" type="submit">Zapisz</button>
+    <a class="btn btn-outline-secondary" asp-action="Index">Anuluj</a>
+  </form>
+</div>
+@section Scripts{<partial name="_ValidationScriptsPartial" />}

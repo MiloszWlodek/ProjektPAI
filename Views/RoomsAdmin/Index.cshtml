@@ -1,0 +1,30 @@
+@model IEnumerable<Room>
+@{
+    ViewData["Title"] = "Sale";
+}
+<div class="container">
+    <h1 class="mt-3">Sale</h1>
+    <a class="btn btn-primary mb-3" asp-action="Create">Dodaj salę</a>
+
+    <table class="table table-striped">
+        <thead><tr><th>Budynek</th><th>Piętro</th><th>Nazwa</th><th>Typ</th><th></th></tr></thead>
+        <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.Floor?.Building?.Code</td>
+                <td>@r.Floor?.Name</td>
+                <td>@r.Name</td>
+                <td>@r.RoomType</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-route-id="@r.Id">Szczegóły</a>
+                    <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@r.Id">Edytuj</a>
+                    <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@r.Id">Usuń</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-secondary" asp-controller="CampusAdmin" asp-action="Index">Powrót do panelu</a>
+</div>

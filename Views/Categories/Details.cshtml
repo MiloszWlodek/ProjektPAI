@@ -1,0 +1,54 @@
+﻿@model InfoInfo.Models.Category
+
+@{
+    ViewData["Title"] = "Kategoria " + Model.Name;
+}
+
+<h1 class="text-primary">Szczegóły</h1>
+
+<div>
+    <h4 class="text-success">Kategoria</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Icon)
+        </dt>
+        <dd class="col-sm-10">
+            <i class="bi-@Model.Icon" style="font-size:2rem;"></i><br />
+            @Html.DisplayFor(model => model.Icon)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Active)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Display)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Display)
+        </dd>
+    </dl>
+</div>
+<div>
+    @{
+        if (User.IsInRole("admin"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model?.CategoryId" class="btn btn-warning">Edycja</a>
+        }
+    }
+    <a asp-action="Index" class="btn btn-light">Powrót</a>
+</div>

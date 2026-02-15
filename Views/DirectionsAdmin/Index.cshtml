@@ -1,0 +1,31 @@
+@model IEnumerable<Direction>
+@{
+    ViewData["Title"] = "Kierunki";
+}
+<div class="container">
+    <h1 class="mt-3">Kierunki</h1>
+    <a class="btn btn-primary mb-3" asp-action="Create">Dodaj kierunek</a>
+
+    <table class="table table-striped">
+        <thead><tr><th>Od punktu</th><th>Kierunek</th><th>Do</th><th>m</th><th>Aktywny</th><th></th></tr></thead>
+        <tbody>
+        @foreach (var d in Model)
+        {
+            <tr>
+                <td>@d.FromPoint?.Name</td>
+                <td>@d.Kind</td>
+                <td>@(d.ToRoom != null ? $"Sala: {d.ToRoom.Name}" : d.ToPoint != null ? $"Punkt: {d.ToPoint.Name}" : "-")</td>
+                <td>@d.WeightMeters</td>
+                <td>@d.IsActive</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-route-id="@d.Id">Szczegóły</a>
+                    <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@d.Id">Edytuj</a>
+                    <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@d.Id">Usuń</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-secondary" asp-controller="CampusAdmin" asp-action="Index">Powrót do panelu</a>
+</div>

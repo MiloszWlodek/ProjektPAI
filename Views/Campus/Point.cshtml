@@ -1,0 +1,124 @@
+@model PointViewModel
+@{
+    ViewData["Title"] = Model.Point.Name;
+    string SafeAlt() => string.IsNullOrWhiteSpace(Model.Point.AltText) ? $"Zdjęcie: {Model.Point.Name}" : Model.Point.AltText!;
+}
+
+<div class="container">
+    <nav aria-label="Breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index">Wirtualna Uczelnia</a></li>
+            <li class="breadcrumb-item"><a asp-action="Building" asp-route-id="@Model.Point.Floor?.BuildingId">@Model.Point.Floor?.Building?.Name</a></li>
+            <li class="breadcrumb-item"><a asp-action="Floor" asp-route-id="@Model.Point.FloorId">@Model.Point.Floor?.Name</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Point.Name</li>
+        </ol>
+    </nav>
+
+    <h1 class="mt-2">@Model.Point.Name</h1>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Point.Description))
+    {
+        <p>@Model.Point.Description</p>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.Point.PhotoPath))
+    {
+        <img class="img-fluid border rounded" src="@Model.Point.PhotoPath" alt="@SafeAlt()" />
+    }
+    else
+    {
+        <div class="alert alert-warning mt-3">Brak zdjęcia dla tego punktu (do uzupełnienia przez admina).</div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.Point.AudioPath))
+    {
+        <div class="mt-3">
+            <h2 class="h5">Informacja głosowa</h2>
+            <audio controls>
+                <source src="@Model.Point.AudioPath" />
+                Twoja przeglądarka nie wspiera odtwarzacza audio.
+            </audio>
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.Point.MatterportUrl))
+    {
+        <div class="mt-3">
+            <a class="btn btn-outline-secondary" href="@Model.Point.MatterportUrl" target="_blank" rel="noopener">Otwórz widok 3D (Matterport)</a>
+        </div>
+    }
+
+    <hr class="my-4" />
+
+    <h2 class="h4">Nawigacja</h2>
+    <p class="text-muted">Możesz używać Tab/Enter lub klawiszy strzałek: ↑ ↓ ← →.</p>
+
+    <div class="d-flex flex-wrap gap-2" role="group" aria-label="Nawigacja po kierunkach">
+    @{
+        bool fOk = Model.Forward != null && Model.Forward.IsActive;
+        bool lOk = Model.Left != null && Model.Left.IsActive;
+        bool rOk = Model.Right != null && Model.Right.IsActive;
+        bool bOk = Model.Back != null && Model.Back.IsActive;
+    }
+
+    <a id="nav-forward" class="btn btn-success @(fOk ? "" : "disabled")"
+       href="@(fOk ? Url.Action("Go", new { id = Model.Forward!.Id }) : "#")"
+       aria-disabled="@(!fOk)"
+       tabindex="@(fOk ? 0 : -1)"
+       onclick="@(fOk ? "" : "return false;")">
+        ↑ Prosto
+    </a>
+
+    <a id="nav-left" class="btn btn-success @(lOk ? "" : "disabled")"
+       href="@(lOk ? Url.Action("Go", new { id = Model.Left!.Id }) : "#")"
+       aria-disabled="@(!lOk)"
+       tabindex="@(lOk ? 0 : -1)"
+       onclick="@(lOk ? "" : "return false;")">
+        ← W lewo
+    </a>
+
+    <a id="nav-right" class="btn btn-success @(rOk ? "" : "disabled")"
+       href="@(rOk ? Url.Action("Go", new { id = Model.Right!.Id }) : "#")"
+       aria-disabled="@(!rOk)"
+       tabindex="@(rOk ? 0 : -1)"
+       onclick="@(rOk ? "" : "return false;")">
+        → W prawo
+    </a>
+
+    <a id="nav-back" class="btn btn-success @(bOk ? "" : "disabled")"
+       href="@(bOk ? Url.Action("Go", new { id = Model.Back!.Id }) : "#")"
+       aria-disabled="@(!bOk)"
+       tabindex="@(bOk ? 0 : -1)"
+       onclick="@(bOk ? "" : "return false;")">
+        ↓ Do tyłu
+    </a>
+
+    <a class="btn btn-outline-secondary ms-auto" asp-action="Floor" asp-route-id="@Model.Point.FloorId">Lista punktów</a>
+</div>
+</div>
+
+@section Scripts{
+<script>
+(function(){
+  function clickIfEnabled(id){
+    const el = document.getElementById(id);
+    if(!el) return;
+    const disabled = el.getAttribute('aria-disabled') === 'True' || el.getAttribute('aria-disabled') === 'true';
+    if(disabled) return;
+    el.click();
+  }
+  document.addEventListener('keydown', function(e){
+    // Nie przechwytuj w polach formularzy
+    const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+    if(tag === 'input' || tag === 'select' || tag === 'textarea') return;
+
+    switch(e.key){
+      case 'ArrowUp': e.preventDefault(); clickIfEnabled('nav-forward'); break;
+      case 'ArrowDown': e.preventDefault(); clickIfEnabled('nav-back'); break;
+      case 'ArrowLeft': e.preventDefault(); clickIfEnabled('nav-left'); break;
+      case 'ArrowRight': e.preventDefault(); clickIfEnabled('nav-right'); break;
+    }
+  });
+})();
+</script>
+}

@@ -1,0 +1,50 @@
+﻿@model IEnumerable<InfoInfo.Models.Opinion>
+
+@{
+    ViewData["Title"] = "Opinie o tekstach";
+}
+
+<h1 class="text-primary">Opinie użytkowników</h1>
+
+<table class="table" id="opinie">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Text!.Title)</th>
+            <th>@Html.DisplayNameFor(model => model.Comment)</th>
+            <th>@Html.DisplayNameFor(model => model.Rating)</th>
+            <th>@Html.DisplayNameFor(model => model.AddedDate)</th>
+            <th>@Html.DisplayNameFor(model => model.Author!.FullName)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Text!.Title)</td>
+                <td class="smaller">@Html.DisplayFor(modelItem => item.Comment)</td>
+                <td>@Html.DisplayFor(modelItem => item.Rating)</td>
+                <td>@Html.DisplayFor(modelItem => item.AddedDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Author!.FullName)</td>
+                <td>
+                    <a class="btn btn-outline-primary rounded-circle my-1" title="Szczegóły" asp-action="Details" asp-route-id="@item.OpinionId"><i class="bi-eye" aria-label="Treść opinii"></i></a>
+                    <a class="btn btn-outline-warning rounded-circle my-1" title="Edycja" asp-action="Edit" asp-route-id="@item.OpinionId"><i class="bi-pen-fill" aria-label="Edycja opinii"></i></a>
+                    <a class="btn btn-outline-danger rounded-circle my-1" title="Usuwanie" asp-action="Delete" asp-route-id="@item.OpinionId"><i class="bi-trash" aria-label="Usuwanie opinii"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#opinie').DataTable({
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.13.1/i18n/pl.json"
+                }
+            });
+        });
+    </script>
+}

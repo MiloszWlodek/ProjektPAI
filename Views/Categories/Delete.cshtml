@@ -1,0 +1,68 @@
+﻿@model InfoInfo.Models.Category
+
+@{
+    ViewData["Title"] = "Usuwanie";
+}
+
+<h1 class="text-primary">Usuwanie</h1>
+
+@if (ViewData.ModelState.ErrorCount > 0)
+{
+    foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+    {
+        <h5 class="alert alert-danger">
+            <i class="bi bi-exclamation-octagon-fill me-3"></i>
+            @error.ErrorMessage
+        </h5>
+    }
+}
+else
+{
+    <h5 class="alert alert-warning" role="alert">
+        <i class="bi bi-question-octagon-fill me-3"></i>
+        Czy na pewno chcesz usunąć kategorię @Model.Name?
+    </h5>
+}
+
+<div>
+    <h4 class="text-success">Kategoria</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Icon)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Icon)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Active)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Display)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Display)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="CategoryId" />
+        <input type="submit" value="Usuń" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-light">Powrót</a>
+    </form>
+</div>

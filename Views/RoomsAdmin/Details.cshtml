@@ -1,0 +1,14 @@
+@model Room
+@{ ViewData["Title"] = "Szczegóły sali"; }
+<div class="container">
+  <h1 class="mt-3">@Model.Name</h1>
+  <dl class="row">
+    <dt class="col-sm-3">Piętro</dt><dd class="col-sm-9">@Model.Floor?.Name</dd>
+    <dt class="col-sm-3">Opis</dt><dd class="col-sm-9">@Model.Description</dd>
+    <dt class="col-sm-3">Zdjęcie</dt><dd class="col-sm-9">@Model.PhotoPath</dd>
+    <dt class="col-sm-3">Alt</dt><dd class="col-sm-9">@Model.AltText</dd>
+    <dt class="col-sm-3">Audio</dt><dd class="col-sm-9">@Model.AudioPath</dd>
+    <dt class="col-sm-3">Punkt wejścia</dt><dd class="col-sm-9">@Model.EntryPointId</dd>
+  </dl>
+  <a class="btn btn-outline-secondary" asp-action="Index">Powrót</a>
+</div>

@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - InfoInfo</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/InfoInfo.styles.css" asp-append-version="true" />
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+</head>
+<body>
+    <a class="skip-link visually-hidden-focusable" href="#main-content">Przejdź do treści</a>
+
+    <!-- Screen-reader status announcements -->
+    <div id="a11y-status" class="sr-status" aria-live="polite" aria-atomic="true"></div>
+
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/graphic/logo.png" alt="Portal InfoInfo" height="30" />
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Texts" asp-action="Index">Teksty</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Campus" asp-action="Index">Wirtualna Uczelnia</a>
+                        </li>
+                    </ul>
+
+                    <!-- Accessibility toolbar: contrast + arrow-nav + TTS -->
+                    <div class="d-flex align-items-center a11y-toolbar me-2" role="group" aria-label="Ułatwienia dostępu">
+                        <button id="btn-contrast" type="button" class="btn btn-outline-primary btn-sm" aria-pressed="false">
+                            Kontrast
+                        </button>
+                        <button id="btn-arrow-nav" type="button" class="btn btn-outline-primary btn-sm" aria-pressed="false">
+                            Strzałki
+                        </button>
+                        <button id="btn-tts" type="button" class="btn btn-outline-primary btn-sm" aria-pressed="false">
+                            Odczytaj
+                        </button>
+                        <button id="btn-tts-stop" type="button" class="btn btn-outline-primary btn-sm" disabled>
+                            Stop
+                        </button>
+                    </div>
+
+                    <form method="get" class="d-flex" role="search"
+                          asp-controller="Texts" asp-action="Index" asp-route-PageNumber="1">
+                        <input class="form-control me-2" type="search" id="Fraza" name="Fraza"
+                               placeholder="Szukany ciąg" aria-label="Search">
+                        <button class="btn btn-outline-primary" type="submit">Szukaj</button>
+                    </form>
+
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main id="main-content" role="main" class="pb-3" tabindex="-1">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - InfoInfo - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

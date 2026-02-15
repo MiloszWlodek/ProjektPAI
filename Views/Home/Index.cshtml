@@ -1,0 +1,65 @@
+﻿@model InfoInfo.Models.ViewModels.HomeDataVM
+
+@{
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+    ViewData["Title"] = "Witamy";
+}
+
+<div class="row text-center py-5">
+    @if (Model.DisplayCategories != null)
+    {
+        foreach (var item in Model.DisplayCategories)
+        {
+            <div class="col-md-6 col-lg-4">
+                <a class="text-primary" asp-controller="Texts" asp-action="Index" asp-route-Kategoria="@item.CategoryId">
+                    <i class="bi-@item.Icon" style="font-size: 4rem"></i>
+                </a>
+                <h3 class="fs-2 oswald">@item.Name</h3>
+                <p>@item.Description</p>
+            </div>
+        }
+    }
+</div>
+
+<div class="row py-5">
+    <div id="carousel-autorzy" class="carousel carousel-dark slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+             <button type="button" data-bs-target="#carousel-autorzy" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Autor 1"></button>
+             @if(Model.Authors != null) {
+                @for (int i = 1; i <= Model.Authors.Count(); i++)
+                {
+                    <button type="button" data-bs-target="#carousel-autorzy" data-bs-slide-to="@i" aria-label="Autor @i"></button>
+                }
+             }
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <img src="~/photo/autorzy.jpg" alt="autorzy tekstów" class="rounded-circle mx-auto d-block" width="250" />
+                    </div>
+                    <div class="col-lg-8">
+                        <h3 class="fw-bold text-success fs-2">Twórcy portalu</h3>
+                        <p class="fs-5 py-3">Z portalem współpracują uznani programiści oraz studenci, którzy chcą rozwijać swoje umiejętności i zdobywać doświadczenie praktyczne. Dołącz do naszego zespołu! Zarejestruj się już dziś.</p>
+                    </div>
+                </div>
+            </div>
+            @if(Model.Authors != null) {
+                @foreach (var item in Model.Authors)
+                {
+                    <div class="carousel-item">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <img src="@Url.Content(item.Photo == null ? "~/photo/mini/user.png" : "~/photo/mini/" + item.Photo)" alt="@item.FullName" class="rounded-circle mx-auto d-block" width="250" />
+                            </div>
+                            <div class="col-lg-8">
+                                <h3 class="fw-bolder text-success fs-2">@item.FirstName</h3>
+                                <p class="fs-5 py-3">@item.Information</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

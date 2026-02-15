@@ -1,0 +1,62 @@
+@model Floor
+@{
+    ViewData["Title"] = $"{Model.Building?.Code} – {Model.Name}";
+}
+
+<div class="container">
+    <nav aria-label="Breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index">Wirtualna Uczelnia</a></li>
+            <li class="breadcrumb-item"><a asp-action="Building" asp-route-id="@Model.BuildingId">@Model.Building?.Name</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex flex-wrap gap-3 align-items-end">
+        <div>
+            <h1 class="mb-0">@Model.Name</h1>
+            <div class="text-muted">Budynek: @Model.Building?.Code</div>
+        </div>
+        <div class="ms-auto">
+            <a class="btn btn-outline-secondary" asp-action="Search">Szukaj sal</a>
+            <a class="btn btn-outline-secondary" asp-action="Route">Wyznacz trasę</a>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.PlanImagePath))
+    {
+        <figure class="mt-3">
+            <img class="img-fluid border rounded" src="@Model.PlanImagePath" alt="Plan piętra: @Model.Name" />
+            <figcaption class="text-muted mt-2">Plan poglądowy piętra.</figcaption>
+        </figure>
+    }
+
+    <div class="row g-4 mt-2">
+        <div class="col-12 col-lg-6">
+            <h2 class="h4">Punkty startowe</h2>
+            <p class="text-muted">Wybierz punkt, aby rozpocząć nawigację (przód/lewo/prawo/tył).</p>
+            <ul class="list-group">
+                @foreach (var p in Model.MovementPoints.OrderBy(x => x.Name))
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>@p.Name</span>
+                        <a class="btn btn-primary btn-sm" asp-action="Point" asp-route-id="@p.Id">Start</a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <h2 class="h4">Sale</h2>
+            <ul class="list-group">
+                @foreach (var r in Model.Rooms.OrderBy(x => x.Name))
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>@r.Name</span>
+                        <a class="btn btn-outline-primary btn-sm" asp-action="Room" asp-route-id="@r.Id">Szczegóły</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

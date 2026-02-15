@@ -1,0 +1,133 @@
+﻿@using System.Security.Claims
+@using System.Reflection
+@using System.ComponentModel.DataAnnotations
+@using InfoInfo.Models
+@model InfoInfo.Models.ViewModels.TextWithOpinions
+@{
+    ViewData["Title"] = Model.SelectedText.Title;
+}
+
+<article>
+    <h1 class="text-primary text-center">@Model.SelectedText.Title</h1>
+    <div class="row">
+        <section class="col-lg-3 mt-3">
+            @if (Model.SelectedText.Author?.Photo != null)
+            {
+                <div class="d-none d-lg-block">
+                    <img src="~/photo/mini/@Model.SelectedText.Author.Photo" width="150" alt="Autor tekstu" class="rounded-circle ms-3 mb-3">
+                </div>
+            }
+            <div class="row textDisplay">
+                <div class="col-6 col-lg-12">
+                    <p><i class="bi bi-person-circle me-1" title="Autor"></i><span class="text-success fw-bold">@Model.SelectedText.Author?.FullName</span></p>
+                    <p><i class="bi bi-calendar-event me-1" title="Data dodania"></i>@Model.SelectedText.AddedDate.ToString("dd MMMM yyyy")</p>
+                    <p><i class="bi bi-folder2-open me-1" title="Kategoria"></i>@Model.SelectedText.Category?.Name</p>
+                </div>
+                <div class="col-6 col-lg-12">
+                    <p><i class="bi bi-smartwatch me-1" title="Czas"></i>Czas czytania ok. @Model.ReadingTime min</p>
+                    <p><i class="bi bi-chat-square-text me-1" title="Liczba komentarzy"></i>@Model.CommentsCount @Model.Description</p>
+                    <p><i class="bi bi-trophy me-1" title="Ocena"></i>Ocena: @Model.AverageRating.ToString("0.0") z @Model.RatingsCount</p>
+                </div>
+            </div>
+            @{
+                string[] tags = Model.SelectedText.Keywords.Split(',');
+                foreach (var tag in tags)
+                {
+                    <p class="d-inline d-lg-block mb-1"><span class="badge bg-primary">@tag</span></p>
+                }
+            }
+        </section>
+
+        <section class="col-lg-9">
+            @{
+                if (!String.IsNullOrEmpty(Model.SelectedText.Graphic))
+                {
+                    <img class="img-fluid mt-3" src="~/img/@Model.SelectedText.Graphic" alt="Grafika tekstu">
+                }
+                else
+                {
+                    <hr />
+                }
+            }
+            <div class="col-10 offset-1 my-3">
+                <h2 class="lead fst-italic">@Model.SelectedText.Summary</h2>
+            </div>
+            <hr />
+            @Html.Raw(Model.SelectedText.Content)
+            <hr />
+        </section>
+    </div>
+
+    <div class="col-lg-9 offset-lg-3">
+        <section class="mb-3">
+            <a asp-action="Index" class="btn btn-primary">Lista tekstów</a>
+            @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.SelectedText.UserId)
+            {
+                <a asp-action="Edit" asp-route-id="@Model.SelectedText.TextId" class="btn btn-warning">Edycja tekstu</a>
+            }
+            @if (User.Identity.IsAuthenticated)
+            {
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newOpinion">
+                    Dodaj opinię
+                </button>
+            }
+        </section>
+
+        <section id="comments">
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <div class="alert alert-info mt-3" role="alert">
+                    Musisz być zalogowany(-na), aby móc przeglądać i dodawać opinie.
+                </div>
+            }
+            else if (Model.SelectedText.Opinions == null || !Model.SelectedText.Opinions.Any())
+            {
+                <div class="alert alert-success mt-3" role="alert">
+                    Dodaj pierwszy komentarz do tego tekstu.
+                </div>
+            }
+            else
+            {
+                foreach (var item in Model.SelectedText.Opinions.OrderByDescending(c => c.OpinionId))
+                {
+                    <div class="d-flex shadow-sm px-3 py-1 mb-3 bg-body rounded">
+                        <div class="flex-shrink-0">
+                            <img src="~/photo/mini/@((item.Author?.Photo != null) ? item.Author.Photo : "user.png")" width="64" alt="Fotografia autora" class="rounded-circle">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6>
+                                <span class="fw-bold text-success me-3">@item.Author?.FullName </span>
+                                <small class="text-secondary me-3"> dodano:@item.AddedDate.ToString("dd.MM.yyyy") </small>
+                                @if (item.Rating == null) { item.Rating = Rating.Unrated; }
+                                Ocena tekstu: <span class="text-warning">
+                                    @(item.Rating.GetType().GetField(item.Rating.ToString())?.GetCustomAttribute<DisplayAttribute>()?.Name)
+                                </span>
+                            </h6>
+                            <p class="smaller">@item.Comment</p>
+                        </div>
+                    </div>
+                }
+            }
+        </section>
+    </div>
+</article>
+
+<div class="modal fade" id="newOpinion" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="ModalLabel">Dodawanie opinii</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+            </div>
+            <div class="modal-body">
+                <partial name="~/Views/Opinions/_CreatePartial.cshtml" model="@Model.NewOpinion" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,69 @@
+﻿@model IEnumerable<InfoInfo.Models.Category>
+
+@{
+    ViewData["Title"] = "Lista kategorii";
+}
+
+<h1>Lista kategorii</h1>
+
+@if (User.IsInRole("admin"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-warning">Nowa kategoria</a>
+    </p>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Icon)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Active)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Display)
+            </th>
+            <th width="12%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <i class="bi-@item.Icon"></i><br />
+                    @Html.DisplayFor(modelItem => item.Icon)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Display)
+                </td>
+                <td>
+                    <a class="btn btn-outline-primary rounded-circle my-1" title="Szczegóły" asp-action="Details" asp-route-id="@item.CategoryId"><i class="bi-eye" aria-label="Szczegóły kategorii"></i></a>
+
+                    @if (User.IsInRole("admin"))
+                    {
+                        <a class="btn btn-outline-warning rounded-circle my-1" title="Edycja" asp-action="Edit" asp-route-id="@item.CategoryId"><i class="bi-pen-fill" aria-label="Edycja kategorii"></i></a>
+                        <a class="btn btn-outline-danger rounded-circle my-1" title="Usuwanie" asp-action="Delete" asp-route-id="@item.CategoryId"><i class="bi-trash" aria-label="Usuwanie kategorii"></i></a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

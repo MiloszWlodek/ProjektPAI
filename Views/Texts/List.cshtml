@@ -1,0 +1,39 @@
+﻿@model IEnumerable<InfoInfo.Models.Text>
+@{
+    ViewData["Title"] = "Zarządzanie tekstami";
+}
+
+<h1>Zarządzanie tekstami</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Dodaj nowy</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Title)</th>
+            <th>@Html.DisplayNameFor(model => model.Active)</th>
+            <th>@Html.DisplayNameFor(model => model.AddedDate)</th>
+            <th>@Html.DisplayNameFor(model => model.Category)</th>
+            <th>@Html.DisplayNameFor(model => model.Author)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                <td>@(item.Active ? "Tak" : "Nie")</td>
+                <td>@Html.DisplayFor(modelItem => item.AddedDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Category.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Author.FullName)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TextId">Edytuj</a> |
+                    <a asp-action="Details" asp-route-id="@item.TextId">Szczegóły</a> |
+                    <a asp-action="Delete" asp-route-id="@item.TextId">Usuń</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

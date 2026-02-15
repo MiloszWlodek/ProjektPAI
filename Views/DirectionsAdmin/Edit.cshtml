@@ -1,0 +1,47 @@
+@model Direction
+@{ ViewData["Title"] = "Edytuj kierunek"; }
+<div class="container">
+  <h1 class="mt-3">Edytuj kierunek</h1>
+  <form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+  <label class="form-label" for="FromPointId">Punkt startowy</label>
+  <select class="form-select" asp-for="FromPointId" asp-items="ViewBag.FromPointId"></select>
+  <span asp-validation-for="FromPointId" class="text-danger"></span>
+</div>
+<div class="mb-3">
+  <label asp-for="Kind" class="form-label"></label>
+  <select asp-for="Kind" class="form-select" asp-items="Html.GetEnumSelectList<DirectionKind>()"></select>
+</div>
+<div class="mb-3">
+  <label asp-for="IsActive" class="form-label"></label>
+  <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+</div>
+<div class="mb-3">
+  <label asp-for="WeightMeters" class="form-label"></label>
+  <input asp-for="WeightMeters" class="form-control" type="number" />
+</div>
+<div class="mb-3">
+  <label asp-for="ElevatorFriendly" class="form-label"></label>
+  <input asp-for="ElevatorFriendly" class="form-check-input" type="checkbox" />
+</div>
+<div class="alert alert-info">
+  Wybierz <strong>albo</strong> docelowy punkt, <strong>albo</strong> docelową salę.
+</div>
+<div class="mb-3">
+  <label class="form-label" for="ToPointId">Docelowy punkt</label>
+  <select class="form-select" asp-for="ToPointId" asp-items="ViewBag.ToPointId">
+    <option value="">-- brak --</option>
+  </select>
+</div>
+<div class="mb-3">
+  <label class="form-label" for="ToRoomId">Docelowa sala</label>
+  <select class="form-select" asp-for="ToRoomId" asp-items="ViewBag.ToRoomId">
+    <option value="">-- brak --</option>
+  </select>
+</div>
+    <button class="btn btn-primary" type="submit">Zapisz</button>
+    <a class="btn btn-outline-secondary" asp-action="Index">Anuluj</a>
+  </form>
+</div>
+@section Scripts{<partial name="_ValidationScriptsPartial" />}

@@ -1,0 +1,85 @@
+﻿@using InfoInfo.Models.ViewModels
+@model TextIndexViewModel
+@{
+    ViewData["Title"] = "Lista tekstów";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="d-none d-md-block col-md-12 col-xl-3">
+            <div class="card mt-2 shadow-sm ">
+                <div class="card-body">
+                    @using (Html.BeginForm("Index", "Texts", FormMethod.Get))
+                    {
+                        <div class="row g-3">
+                            <div class="form-group col-auto">
+                                <label for="Kategoria">Kategoria:</label>
+                                @Html.DropDownList("Kategoria", ViewBag.Category as SelectList, "--- wszystkie ---", htmlAttributes: new { @class = "form-control" })
+                            </div>
+                            <div class="form-group col-auto">
+                                <label for="Autor">Autor(ka):</label>
+                                @Html.DropDownList("Autor", ViewBag.Author as SelectList, "--- wszyscy ---", htmlAttributes: new { @class = "form-control" })
+                            </div>
+                            <div class="form-group col-auto">
+                                <label for="Fraza">Fragment tekstu:</label>
+                                <input type="text" class="form-control" id="Fraza" name="Fraza" placeholder="Szukany ciąg" value="@Model.TextList?.Phrase">
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-4 col-auto">Filtruj</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-9">
+            @foreach (var item in Model.Texts!)
+            {
+                <div class="card mt-2 shadow-sm">
+                    <div class="card-header">
+                        <h4 class="text-primary">@item.Title</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="@Url.Content(String.IsNullOrEmpty(item.Graphic) ? "~/img/mini/" + item.CategoryId + ".jpg" : "~/img/mini/" + item.Graphic)" class="img-fluid" alt="@item.Category?.Name" />
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title text-success">@item.Author?.FullName</h5>
+                                <p class="card-text fst-italic">@item.Summary</p>
+                                <p class="card-text"><small class="text-muted">Opublikowano: @item.AddedDate.ToString("dd.MM.yyyy") </small></p>
+                                <div class="position-relative">
+                                    <a href="@Url.Action("Details", "Texts", new { id = item.TextId })" class="btn btn-outline-primary position-absolute bottom-0 end-0">Czytaj >>></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="row mt-3">
+                <nav aria-label="Nawigacja pomiędzy kolejnymi stronami">
+                    <ul class="pagination">
+                        @if (Model.TextList?.PageNumber > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Index", "Texts", new { PageNumber = Model.TextList.PageNumber - 1, Fraza = Model.TextList.Phrase, Autor = Model.TextList.Author, Kategoria = Model.TextList.Category })">Poprzednia</a>
+                            </li>
+                        }
+                        @for (var i = 1; i <= Model.TextList?.PageCount; i++)
+                        {
+                            <li class="@(i == Model.TextList.PageNumber ? "page-item active" : "page-item")">
+                                <a class="page-link" href="@Url.Action("Index", "Texts", new { PageNumber = i, Fraza = Model.TextList.Phrase, Autor = Model.TextList.Author, Kategoria = Model.TextList.Category })">@i</a>
+                            </li>
+                        }
+                        @if (Model.TextList?.PageNumber < Model.TextList?.PageCount)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Index", "Texts", new { PageNumber = Model.TextList.PageNumber + 1, Fraza = Model.TextList.Phrase, Autor = Model.TextList.Author, Kategoria = Model.TextList.Category })">Następna</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
